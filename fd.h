@@ -34,7 +34,7 @@ public:
     int GetCharNum();
 
     void Close();
-    char GetChar();
+    int GetChar();
     void UngetChar(char c);
     void ReportError(const char *msg);
 };

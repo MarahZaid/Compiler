@@ -1,5 +1,5 @@
 #include "fd.h"
-
+using namespace std;
 FileDescriptor::FileDescriptor()
 {
     fp = stdin;
@@ -81,7 +81,7 @@ bool FileDescriptor::ReadNextLine()
     if (!fgets(buffer, buf_size, fp))
         return false;
 
-    // إذا السطر أطول من البافر
+
     while (strchr(buffer, '\n') == nullptr && !feof(fp))
     {
         int old_size = buf_size;
@@ -101,7 +101,7 @@ bool FileDescriptor::ReadNextLine()
     return true;
 }
 
-char FileDescriptor::GetChar()
+int FileDescriptor::GetChar()
 {
     if (buffer[char_number] == '\0')
     {
@@ -121,18 +121,30 @@ void FileDescriptor::UngetChar(char c)
     char_number--;
     flag = SET;
 }
-
 void FileDescriptor::ReportError(const char *msg)
 {
-    std::cerr << std::endl;   // ← هون ضيفها
+    cout << "\n";
 
-    std::cerr << "Error in file: "
-              << (file ? file : "stdin")
-              << " at line " << line_number
-              << " char " << char_number
-              << " -> " << msg << std::endl;
+    // اطبع السطر الحالي
+    cout << buffer;
+
+    // اطبع مسافات لحد مكان الخطأ
+    int pos = (char_number > 0) ? char_number - 1 : 0;
+
+    for (int i = 0; i < pos; i++)
+    {
+        cout << (buffer[i] == '\t' ? '\t' : ' ');
+    }
+
+    cout << "^\n";
+
+    // اطبع رسالة الخطأ بالشكل المطلوب
+    cout << "Error: \"" << msg << "\" on line "
+         << line_number
+         << " of "
+         << (file ? file : "stdin")
+         << "\n\n";
 }
-
 void FileDescriptor::Close()
 {
     if (fp && fp != stdin)

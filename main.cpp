@@ -17,13 +17,13 @@ int main()
     cout << "Reading file: " << fd.GetFileName() << endl;
     cout << "-----------------------------" << endl;
 
-    char c;
+    int c;
 
     while ((c = fd.GetChar()) != EOF)
     {
-        cout << c;
+        cout << (char)c;
 
-        // مثال تجربة Unget
+
         if (c == 'a')
         {
             cout << "\n(Unget applied)\n";
@@ -32,7 +32,7 @@ int main()
             cout << "Read again: " << again << endl;
         }
 
-        // مثال تجربة ReportError
+
         if (c == '@')
         {
             fd.ReportError("Invalid symbol detected");
