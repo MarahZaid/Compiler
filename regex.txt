@@ -1,0 +1,143 @@
+===========================================================================
+COMP2026 LANGUAGE LEXEMES - REGULAR EXPRESSIONS
+===========================================================================
+Course: Compiler Construction
+Assignment: Programming Assignment #1 - Task #1
+Date: Spring 2026
+===========================================================================
+
+1. IDENTIFIERS
+--------------
+Regular Expression:
+[a-zA-Z_][a-zA-Z0-9_]*
+
+Description:
+- Must start with a letter (uppercase or lowercase) or underscore
+- Followed by zero or more letters, digits, or underscores
+- Case-sensitive (e.g., "dog" and "DoG" are different)
+
+Examples:
+- A_Funny33COMP2026identifier
+- x
+- z101
+- _temp
+
+
+2. INTEGER LITERALS
+-------------------
+Regular Expression:
+-?[0-9]+
+
+Description:
+- Optional minus sign (-) followed by one or more digits
+- Base 10 numbers only
+
+Examples:
+- 1
+- 2
+- -987623
+
+
+3. STRING LITERALS
+------------------
+Regular Expression:
+"[^"\n]*"
+
+Description:
+- Starts and ends with double quotes (")
+- Contains any character except double quote (") and newline (\n)
+- Cannot span multiple lines
+- Empty string ("") is allowed
+
+Examples:
+- ""
+- "a string"
+- "hello world 123"
+
+
+4. KEYWORDS (Reserved Words)
+----------------------------
+Regular Expression:
+program|var|constant|integer|bool|string|float|true|false|if|then|else|while|do|od|and|or|read|write|for|from|to|by
+
+Description:
+- All keywords are lowercase
+- Cannot be used as identifiers
+
+List of keywords:
+- program        - var           - constant      - integer
+- bool           - string        - float         - true
+- false          - if            - then          - else
+- while          - do            - od            - and
+- or             - read          - write         - for
+- from           - to            - by
+
+
+5. OPERATORS
+------------
+Regular Expression:
+:=|!=|<=|>=|[+\-*/=<>()\[\]{};,.]
+
+Description:
+- Single-character operators: + - * / = < > ( ) [ ] { } ; , .
+- Two-character operators: := != <= >=
+
+List of operators:
+- ( )           - [ ]           - { }
+- :             - :=            - .
+- +             - -             - *
+- /             - =             - !=
+- <             - <=            - >
+- >=            - ;             - ,
+- (space not included, used for separation)
+
+
+6. COMMENTS
+-----------
+Regular Expression:
+#.*|##.*
+
+Description:
+- Single # comment: everything after # until end of line
+- Double ## comment: everything after ## until end of line
+- Comments are stripped from input (not returned as tokens)
+
+Examples:
+- # This is a comment
+- ## This is also a comment ##
+
+
+7. WHITESPACE
+-------------
+Regular Expression:
+[ \t\n]+
+
+Description:
+- Spaces, tabs, and newlines
+- Used to separate lexemes
+- Ignored by scanner (not returned as tokens)
+
+
+8. ILLEGAL CHARACTERS
+---------------------
+Any character not matching the above patterns is illegal in COMP2026 programs.
+
+Examples of illegal characters:
+- @
+- $
+- %
+- &
+
+
+===========================================================================
+NOTES:
+===========================================================================
+1. The language is case-sensitive (e.g., "IF" is an identifier, not keyword "if")
+2. Maximum length for identifiers and strings is unlimited
+3. Comments should be recognized and stripped, not returned as tokens
+4. Whitespace is optional where no ambiguity would result
+5. All regular expressions follow POSIX standard syntax
+
+===========================================================================
+END OF REGULAR EXPRESSIONS
+===========================================================================
