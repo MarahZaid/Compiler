@@ -1,96 +1,56 @@
-#ifndef SCANNER_H
-#define SCANNER_H
+// scanner.h
+#ifndef __SCANNER__H
+#define __SCANNER__H
 
 #include "fd.h"
-#include <string>
-#include <unordered_map>
 
-using namespace std;
+// Token types enumeration
+typedef enum {
+    /* Literals */
+    lx_identifier, lx_integer, lx_string, lx_float,
+    /* Keywords */
+    kw_program,
+    kw_var, kw_constant, kw_integer, kw_boolean, kw_string, kw_float,
+    kw_true, kw_false, kw_if, kw_fi, kw_then, kw_else,
+    kw_while, kw_do, kw_od,
+    kw_and, kw_or, 
+    kw_read, kw_write,
+    kw_for, kw_from, kw_to, kw_by,
+    kw_function, kw_procedure, kw_return, kw_not, kw_begin, kw_end,
+    /* Operators */
+    lx_lparen, lx_rparen, lx_lbracket, lx_rbracket,
+    lx_colon, lx_dot, lx_semicolon, lx_comma, lx_colon_eq,
+    lx_plus, lx_minus, lx_star, lx_slash,
+    lx_eq, lx_neq, lx_lt, lx_le, lx_gt, lx_ge, lx_eof
+} LEXEME_TYPE;
 
-enum TokenType
-{
-    // Special
-    T_EOF,
-    T_ERROR,
-
-    // Identifiers & literals
-    T_ID,
-    T_INTEGER,
-    T_STRING,
-
-    // Keywords
-    T_PROGRAM,
-    T_VAR,
-    T_CONSTANT,
-    T_INTEGER_KW,
-    T_BOOL,
-    T_STRING_KW,
-    T_FLOAT,
-    T_TRUE,
-    T_FALSE,
-    T_IF,
-    T_FI,
-    T_THEN,
-    T_ELSE,
-    T_WHILE,
-    T_DO,
-    T_OD,
-    T_FOR,
-    T_FROM,
-    T_TO,
-    T_BY,
-    T_READ,
-    T_WRITE,
-    T_AND,
-    T_OR,
-
-    // Operators & symbols
-    T_PLUS,        // +
-    T_MINUS,       // -
-    T_MULT,        // *
-    T_DIV,         // /
-    T_ASSIGN,      // :=
-    T_EQUAL,       // =
-    T_NOT_EQUAL,   // !=
-    T_LT,          // <
-    T_LE,          // <=
-    T_GT,          // >
-    T_GE,          // >=
-    T_DOT,         // .
-    T_SEMICOLON,   // ;
-    T_COMMA,       // ,
-    T_LPAREN,      // (
-    T_RPAREN,      // )
-    T_LBRACKET,    // [
-    T_RBRACKET,    // ]
-    T_LBRACE,      // {
-    T_RBRACE       // }
+// Definition of TOKEN
+struct TOKEN {
+    LEXEME_TYPE type;
+    int value;          // for integers
+    float float_value;  // for floats
+    char *str_ptr;      // points to strings or identifiers
 };
 
-struct Token
-{
-    TokenType type;
-    string str_val;   // for ID and STRING
-    int int_val;      // for INTEGER
-
-    Token(TokenType t) : type(t), int_val(0) {}
-};
-
-class Scanner
-{
+class SCANNER {
 private:
-    unordered_map<string, TokenType> keywords;
-
-    void InitKeywords();
-    void SkipWhitespace(FileDescriptor *fd);
-    void SkipComment(FileDescriptor *fd);
-    Token* ScanIdentifierOrKeyword(FileDescriptor *fd, char first);
-    Token* ScanNumber(FileDescriptor *fd, char first);
-    Token* ScanString(FileDescriptor *fd);
+    FileDescriptor *Fd;
+    char current_char;
+    
+    // Helper functions
+    void skip_comments();
+    bool check_keyword(const char *str, LEXEME_TYPE &type);
+    TOKEN* get_identifier();
+    TOKEN* get_string();
+    TOKEN* get_number();
+    TOKEN* get_operator();
+    void next_char();
 
 public:
-    Scanner();
-    Token* scan(FileDescriptor *fd);
+    SCANNER();
+    SCANNER(FileDescriptor *fd);
+    ~SCANNER();
+    TOKEN* Scan();
 };
 
 #endif
