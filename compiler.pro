@@ -17,4 +17,6 @@ HEADERS += \
 CONFIG += c++17
 
 DISTFILES += \
-    test_scanner.txt
+    test.txt \
+    test_scanner.txt \
+    regex.txt \
