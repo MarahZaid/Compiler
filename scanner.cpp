@@ -23,7 +23,7 @@ const LEXEME_TYPE key_type[] = {
 };
 
 SCANNER::SCANNER() {
-    Fd = nullptr;
+    Fd = NULL;
     current_char = ' ';
 }
 
@@ -102,7 +102,7 @@ TOKEN* SCANNER::get_identifier() {
     LEXEME_TYPE kw_type;
     if (check_keyword(buffer, kw_type)) {
         token->type = kw_type;
-        token->str_ptr = nullptr;
+        token->str_ptr = NULL;
         token->value = 0;
     } else {
         token->type = lx_identifier;
@@ -145,7 +145,7 @@ TOKEN* SCANNER::get_string() {
         next_char(); // Skip closing quote
     } else {
         Fd->ReportError("Unterminated string");
-        token->str_ptr = nullptr;
+        token->str_ptr = NULL;
     }
     
     delete[] buffer;
@@ -254,35 +254,50 @@ TOKEN* SCANNER::get_operator() {
 }
 
 TOKEN* SCANNER::Scan() {
+
+    // إذا ما في ملف مفتوح → رجعي EOF
     if (!Fd || !Fd->IsOpen()) {
         TOKEN *eof_token = new TOKEN;
         eof_token->type = lx_eof;
+        eof_token->str_ptr = NULL;
         return eof_token;
     }
-    
-    // Skip whitespace
+
+    // 🔥 مهم جداً: أول مرة لازم نقرأ أول حرف
+    if (current_char == ' ')
+        next_char();
+
+    // تخطي الفراغات
     while (isspace(current_char)) {
         next_char();
     }
-    
-    // Skip comments
+
+    // تخطي التعليقات
     skip_comments();
-    
-    // Check for EOF
+
+    // إذا وصلنا لنهاية الملف
     if (current_char == EOF) {
         TOKEN *eof_token = new TOKEN;
         eof_token->type = lx_eof;
+        eof_token->str_ptr = NULL;
         return eof_token;
     }
-    
-    // Process based on current character
+
+    // Identifier أو Keyword
     if (isalpha(current_char) || current_char == '_') {
         return get_identifier();
-    } else if (isdigit(current_char) || (current_char == '-' && isdigit(Fd->GetChar()))) {
-        return get_number();
-    } else if (current_char == '"') {
-        return get_string();
-    } else {
-        return get_operator();
     }
+
+    // Number
+    if (isdigit(current_char)) {
+        return get_number();
+    }
+
+    // String
+    if (current_char == '"') {
+        return get_string();
+    }
+
+    // Otherwise → Operator
+    return get_operator();
 }

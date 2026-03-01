@@ -11,7 +11,7 @@ FileDescriptor::FileDescriptor()
     buffer = new char[buf_size];
     buffer[0] = '\0';
 
-    file = nullptr;
+    file = NULL;
 }
 
 FileDescriptor::FileDescriptor(const char *FileName)
@@ -32,7 +32,7 @@ FileDescriptor::FileDescriptor(const char *FileName)
         strcpy(file, FileName);
     }
     else
-        file = nullptr;
+        file = NULL;
 }
 
 FileDescriptor::~FileDescriptor()
@@ -48,7 +48,7 @@ FileDescriptor::~FileDescriptor()
 
 bool FileDescriptor::IsOpen()
 {
-    return (fp != nullptr);
+    return (fp != NULL);
 }
 
 char *FileDescriptor::GetFileName()
@@ -82,7 +82,7 @@ bool FileDescriptor::ReadNextLine()
         return false;
 
 
-    while (strchr(buffer, '\n') == nullptr && !feof(fp))
+    while (strchr(buffer, '\n') == NULL && !feof(fp))
     {
         int old_size = buf_size;
         buf_size *= 2;
@@ -150,6 +150,6 @@ void FileDescriptor::Close()
     if (fp && fp != stdin)
     {
         fclose(fp);
-        fp = nullptr;
+        fp = NULL;
     }
 }
