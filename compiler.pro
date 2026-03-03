@@ -8,15 +8,17 @@ TEMPLATE = app
 SOURCES += \
     main.cpp \
     fd.cpp \
-    scanner.cpp
+    scanner.cpp \
+    token_utils.cpp
 
 HEADERS += \
     fd.h \
-    scanner.h
+    scanner.h \
+    token_utils.h
 
 CONFIG += c++17
 
 DISTFILES += \
     test.txt \
     test_scanner.txt \
-    regex.txt \
+    Task1_REs.txt
