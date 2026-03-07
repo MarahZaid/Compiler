@@ -125,10 +125,10 @@ void FileDescriptor::ReportError(const char *msg)
 {
     cout << "\n";
 
-    // اطبع السطر الحالي
+
     cout << buffer;
 
-    // اطبع مسافات لحد مكان الخطأ
+
     int pos = (char_number > 0) ? char_number - 1 : 0;
 
     for (int i = 0; i < pos; i++)
@@ -138,7 +138,6 @@ void FileDescriptor::ReportError(const char *msg)
 
     cout << "^\n";
 
-    // اطبع رسالة الخطأ بالشكل المطلوب
     cout << "Error: \"" << msg << "\" on line "
          << line_number
          << " of "

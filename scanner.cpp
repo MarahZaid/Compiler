@@ -187,7 +187,7 @@ TOKEN* SCANNER::get_number() {
         next_char();
     }
 
-    /* 🔥 FIX 1: منع 34xyz */
+
     if (isalpha(current_char) || current_char == '_') {
 
         while (isalnum(current_char) || current_char == '_')
@@ -196,7 +196,7 @@ TOKEN* SCANNER::get_number() {
         Fd->ReportError("Invalid identifier starting with digit");
 
         delete token;
-        return Scan();   // كمل قراءة
+        return Scan();
     }
 
     if (current_char == '.') {
@@ -291,7 +291,7 @@ TOKEN* SCANNER::get_operator() {
             break;
 
         default:
-            /* 🔥 FIX 2: illegal char ما يوقف البرنامج */
+
             Fd->ReportError("Illegal character");
             delete token;
             return Scan();
